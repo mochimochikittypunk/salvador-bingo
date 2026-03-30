@@ -1,0 +1,400 @@
+@import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Inter:wght@400;500;600;800&display=swap');
+
+:root {
+  --base-bg: #fde6d8;
+  --accent-color: #3b2f2f;
+  --primary-btn: #4a3b32;
+  --primary-btn-hover: #3b2f2f;
+  --reach-color: #e67e22;
+  --bingo-color: #e74c3c;
+  --card-bg: #ffffff;
+  --text-main: #3b2f2f;
+
+  --base-font-size: 1.1rem;
+  --small-font-size: 0.85rem;
+}
+
+body {
+  background-color: var(--base-bg);
+  color: var(--text-main);
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-layout {
+  width: 100%;
+  max-width: 500px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Typography & Headers */
+h1, h2, h3, .yomogi-text {
+  font-family: 'Yomogi', cursive;
+}
+
+.title-logo {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  line-height: 1.4;
+  color: var(--accent-color);
+}
+
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #665b5b;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+/* Forms & Cards */
+.login-card {
+  background-color: var(--card-bg);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(59, 47, 47, 0.08); /* Soft elegant shadow */
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 1.5rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+}
+
+.input-group input {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 1.5px solid #d3c4bc;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.input-group input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(59, 47, 47, 0.1);
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  border: none;
+  border-radius: 8px;
+  padding: 0.9rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.primary-button {
+  background-color: var(--primary-btn);
+  color: white;
+  box-shadow: 0 4px 6px rgba(74, 59, 50, 0.2);
+}
+
+.primary-button:hover {
+  background-color: var(--primary-btn-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(74, 59, 50, 0.25);
+}
+
+.secondary-button {
+  background-color: #f7ede8;
+  color: var(--accent-color);
+  border: 1px solid #d3c4bc;
+}
+
+.secondary-button:hover {
+  background-color: #f0e2da;
+}
+
+.text-button {
+  background: none;
+  color: #8c7d7d;
+  font-weight: 500;
+  text-decoration: underline;
+  padding: 0.5rem;
+}
+
+.text-button:hover {
+  color: var(--accent-color);
+}
+
+.inline-rules {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+/* Utilities */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+  color: #a89c9c;
+  font-size: 0.85rem;
+}
+
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e8ddd6;
+}
+
+.divider span {
+  padding: 0 10px;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+/* Generated Pass Alert */
+.generated-pass-alert {
+  margin-top: 1.5rem;
+  background-color: #fffaf5;
+  border: 1px dashed var(--accent-color);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  animation: fadeIn 0.3s;
+}
+
+.highlight-pass {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--reach-color);
+  display: inline-block;
+  margin: 0.5rem 0;
+}
+
+.warning-text {
+  font-size: 0.75rem;
+  color: #d35400;
+  margin-top: 0.5rem;
+  font-weight: bold;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(59, 47, 47, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.2s;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: var(--accent-color);
+  border-bottom: 2px solid #f0e2da;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.rule-section {
+  margin-bottom: 1.2rem;
+}
+
+.rule-section h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: #8c7d7d;
+  margin-bottom: 0.3rem;
+}
+
+.rule-section p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.reward-list {
+  padding-left: 1.2rem;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.modal-content .primary-button {
+  margin-top: 1.5rem;
+}
+
+/*================================================*
+ * BINGO BOARD SECTION (Ported heavily from HTML) *
+ *================================================*/
+.bingo-page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.actions-section {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.status-board {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  height: 3rem; 
+  font-family: 'Yomogi', cursive;
+}
+
+.status-text {
+  opacity: 0.15; 
+  transition: all 0.3s ease;
+}
+
+#reach-text.active {
+  opacity: 1;
+  color: var(--reach-color); 
+  animation: flash 1s infinite alternate;
+}
+
+#bingo-text.active {
+  opacity: 1;
+  color: var(--bingo-color);
+  transform: scale(1.1);
+  animation: bounce 0.5s ease forwards;
+}
+
+@keyframes flash {
+  0% { opacity: 0.5; text-shadow: none; }
+  100% { opacity: 1; text-shadow: 0 0 10px rgba(243, 156, 18, 0.5); }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0) scale(1.1); }
+  40% { transform: translateY(-10px) scale(1.1); }
+  60% { transform: translateY(-5px) scale(1.1); }
+}
+
+.bingo-container {
+  background-color: var(--card-bg);
+  padding: 2rem;
+  border-radius: 2px 15px 3px 10px / 15px 2px 10px 3px;
+  box-shadow: 2px 4px 15px rgba(59,47,47,0.1);
+}
+
+.bingo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 0;
+  border: 4px solid var(--accent-color);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+}
+
+.bingo-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: var(--base-font-size);
+  font-weight: bold;
+  border: 1px solid #8c7d7d;
+  padding: 4px;
+  line-height: 1.2;
+  word-break: auto-phrase;
+  border-radius: 10px 2px 8px 3px/3px 10px 2px 8px;
+  box-sizing: border-box;
+  position: relative; 
+  cursor: pointer; 
+  user-select: none; 
+  transition: background-color 0.2s;
+  font-family: 'Yomogi', cursive;
+  color: var(--accent-color);
+}
+
+.bingo-cell:hover, .bingo-cell:active {
+  background-color: #fdf6f0; 
+}
+
+.bingo-cell.small-text {
+  font-size: var(--small-font-size);
+}
+
+.bingo-cell.marked::after {
+  content: "";
+  position: absolute;
+  top: 5%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  border: 4px solid var(--bingo-color); 
+  border-radius: 50% 40% 60% 40% / 40% 50% 40% 60%;
+  pointer-events: none; 
+  transform: rotate(-10deg);
+  opacity: 0.85;
+  animation: fadeInScale 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.5) rotate(-20deg); }
+  to { opacity: 0.85; transform: scale(1) rotate(-10deg); }
+}
+
+.bingo-cell:nth-child(-n+3) { border-top: none; }
+.bingo-cell:nth-child(n+7) { border-bottom: none; }
+.bingo-cell:nth-child(3n+1) { border-left: none; }
+.bingo-cell:nth-child(3n) { border-right: none; }
