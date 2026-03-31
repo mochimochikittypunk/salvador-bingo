@@ -594,3 +594,58 @@ button {
   color: #1a0b2e;
 }
 
+/* Base Sync Card */
+.base-sync-card {
+  background-color: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(59, 47, 47, 0.05);
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 2rem;
+  text-align: center;
+  border: 2px dashed #d3c4bc;
+}
+
+.base-sync-card h3 {
+  font-size: 1rem;
+  color: var(--accent-color);
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.sync-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 0.95rem;
+  border: 1.5px solid #d3c4bc;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+}
+
+.sync-input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(59, 47, 47, 0.1);
+}
+
+.sync-msg {
+  font-size: 0.85rem;
+  margin-top: 1rem;
+  margin-bottom: 0;
+  font-weight: bold;
+  animation: fadeIn 0.3s;
+}
+
+.sync-msg.success {
+  color: #27ae60;
+}
+
+.sync-msg.error {
+  color: var(--bingo-color);
+}
+

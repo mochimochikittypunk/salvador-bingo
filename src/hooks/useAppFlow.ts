@@ -34,11 +34,16 @@ export function useAppFlow() {
     }
   }, [password, currentView]);
 
-  const toggleMark = (index: number) => {
+  const mergePurchasedItems = (boardData: string[], newPurchasedItems: string[]) => {
     setMarkedState(prev => {
       const newState = [...prev];
-      newState[index] = !newState[index];
-      // Save state keyed by the current password
+      for (let i = 0; i < boardData.length; i++) {
+        // 購入履歴に含まれている豆があればマスを開ける
+        if (newPurchasedItems.includes(boardData[i])) {
+          newState[i] = true;
+        }
+      }
+      // 現在の合言葉のステータスとして保存
       localStorage.setItem(`salvador_bingo_state_${password}`, JSON.stringify(newState));
       return newState;
     });
@@ -66,7 +71,7 @@ export function useAppFlow() {
     currentView,
     password,
     markedState,
-    toggleMark,
+    mergePurchasedItems,
     login,
     goToTop,
     logout

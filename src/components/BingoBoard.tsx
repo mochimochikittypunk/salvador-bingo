@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { getOptimizedBoard, checkGameStatus } from '../utils/bingoLogic';
 
 type Props = {
   password: string;
   markedState: boolean[];
-  toggleMark: (index: number) => void;
+  onMergePurchasedItems: (boardData: string[], newPurchasedItems: string[]) => void;
   onGoToTop: () => void;
   onLogout: () => void;
 };
@@ -12,13 +12,54 @@ type Props = {
 export const BingoBoard: React.FC<Props> = ({ 
   password, 
   markedState, 
-  toggleMark, 
+  onMergePurchasedItems, 
   onGoToTop, 
   onLogout 
 }) => {
   // Seeded randomization based on the password
   const boardData = useMemo(() => getOptimizedBoard(password), [password]);
   const { isReach, isBingo, bingoCount } = checkGameStatus(markedState);
+
+  const [orderId, setOrderId] = useState('');
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncMessage, setSyncMessage] = useState<{text: string, isError: boolean} | null>(null);
+
+  const handleSyncOrder = async () => {
+    if (!orderId.trim()) {
+      setSyncMessage({ text: '注文番号を入力してください。', isError: true });
+      return;
+    }
+
+    setIsSyncing(true);
+    setSyncMessage(null);
+
+    try {
+      const res = await fetch('/api/base/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: orderId.trim() })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setSyncMessage({ text: data.error || 'エラーが発生しました。', isError: true });
+      } else {
+        const purchasedItems = data.purchasedItems || [];
+        if (purchasedItems.length > 0) {
+          onMergePurchasedItems(boardData, purchasedItems);
+          setSyncMessage({ text: '✅ 注文履歴を反映し、マスが開きました！', isError: false });
+          setOrderId(''); // Clear on success
+        } else {
+          setSyncMessage({ text: 'この注文にはビンゴ対象のコーヒー豆が含まれていません。', isError: true });
+        }
+      }
+    } catch (err) {
+      setSyncMessage({ text: '通信エラーが発生しました。時間を置いて再試行してください。', isError: true });
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   // 到達列に応じたボタン（最高到達のみ）を決定
   const getRewardInfo = () => {
@@ -51,7 +92,9 @@ export const BingoBoard: React.FC<Props> = ({
               <div 
                 key={index} 
                 className={`bingo-cell ${isSmallText ? 'small-text' : ''} ${isMarked ? 'marked' : ''}`}
-                onClick={() => toggleMark(index)}
+                onClick={() => {
+                  if (!isMarked) alert('手動でマスを開けることはできません。ページ下部の「購入履歴を連携」を利用してください。');
+                }}
               >
                 {text}
               </div>
@@ -67,6 +110,26 @@ export const BingoBoard: React.FC<Props> = ({
           </a>
         </div>
       )}
+
+      <div className="base-sync-card fade-in">
+        <h3>🛍️ 購入履歴を連携してマスを開ける</h3>
+        <input 
+          type="text" 
+          placeholder="BASEの注文番号 (例: 2BXXXXXXXX...)" 
+          value={orderId} 
+          onChange={e => setOrderId(e.target.value)} 
+          disabled={isSyncing}
+          className="sync-input"
+        />
+        <button onClick={handleSyncOrder} className="primary-button" disabled={isSyncing}>
+          {isSyncing ? '通信中...' : '購入履歴を連携する'}
+        </button>
+        {syncMessage && (
+          <p className={`sync-msg ${syncMessage.isError ? 'error' : 'success'}`}>
+            {syncMessage.text}
+          </p>
+        )}
+      </div>
       
       <div className="actions-section">
         <button className="secondary-button" onClick={onGoToTop} style={{ marginBottom: '16px' }}>

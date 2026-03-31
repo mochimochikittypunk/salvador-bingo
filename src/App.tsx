@@ -7,7 +7,7 @@ import { RewardPage } from './components/RewardPage';
 import './index.css';
 
 function App() {
-  const { currentView, password, markedState, toggleMark, login, goToTop, logout } = useAppFlow();
+  const { currentView, password, markedState, mergePurchasedItems, login, goToTop, logout } = useAppFlow();
   const [rewardLevel, setRewardLevel] = useState<string | null>(null);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ function App() {
         <BingoBoard 
           password={password}
           markedState={markedState}
-          toggleMark={toggleMark}
+          onMergePurchasedItems={mergePurchasedItems}
           onGoToTop={goToTop}
           onLogout={logout}
         />
