@@ -67,7 +67,7 @@ export default async function handler(req: any, res: any) {
     }
 
     // BASE Orders data extraction
-    const orderItems = orderData.order.order_item || [];
+    const orderItems = orderData.order.order_items || [];
     const itemNames = orderItems.map((item: any) => item.title);
 
     // Filter which items bought match our bingo beans
