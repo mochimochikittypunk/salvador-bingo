@@ -8,9 +8,11 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "reset": "node scripts/reset-counter.js"
+    "reset": "node scripts/reset-passwords.js"
   },
   "dependencies": {
+    "dotenv": "^17.3.1",
+    "ioredis": "^5.10.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },

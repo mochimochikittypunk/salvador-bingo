@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { RuleModal } from './RuleModal';
-import { passwordsDatabase } from '../utils/passwordsDatabase';
 
 type Props = {
   onLogin: (password: string) => void;
@@ -13,6 +12,7 @@ export const TopPage: React.FC<Props> = ({ onLogin, defaultPassword = '' }) => {
   const [generatedPass, setGeneratedPass] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [accessCount, setAccessCount] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // 擬似的な合言葉発行数（アクセス数）の生成
@@ -24,24 +24,51 @@ export const TopPage: React.FC<Props> = ({ onLogin, defaultPassword = '' }) => {
     setAccessCount(simulatedCount);
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const pass = inputPass.trim();
-    if (pass) {
-      if (passwordsDatabase.includes(pass)) {
-        setErrorMsg(null);
+    if (!pass) return;
+
+    setIsLoading(true);
+    setErrorMsg(null);
+    try {
+      const resp = await fetch('/api/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pass })
+      });
+      const data = await resp.json();
+      
+      if (data.valid) {
         onLogin(pass);
       } else {
-        setErrorMsg('無効な合言葉です。新しく発行するか、正しい言葉を入力してください。');
+        setErrorMsg(data.error || '無効な合言葉です。新しく発行するか、正しい言葉を入力してください。');
       }
+    } catch (err) {
+      setErrorMsg('通信エラーが発生しました。時間を置いて再試行してください。');
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleGenerate = () => {
-    const randomWord = passwordsDatabase[Math.floor(Math.random() * passwordsDatabase.length)];
-    setGeneratedPass(randomWord);
-    setInputPass(randomWord);
+  const handleGenerate = async () => {
+    setIsLoading(true);
     setErrorMsg(null);
+    try {
+      const resp = await fetch('/api/generate', { method: 'POST' });
+      const data = await resp.json();
+
+      if (resp.ok && data.password) {
+        setGeneratedPass(data.password);
+        setInputPass(data.password);
+      } else {
+        setErrorMsg(data.error || '合言葉の発行に失敗しました。');
+      }
+    } catch (err) {
+      setErrorMsg('通信エラーが発生しました。時間を置いて再試行してください。');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -68,19 +95,20 @@ export const TopPage: React.FC<Props> = ({ onLogin, defaultPassword = '' }) => {
               }} 
               placeholder="合言葉を入力"
               required
+              disabled={isLoading}
             />
           </div>
           {errorMsg && <p className="error-message">{errorMsg}</p>}
-          <button type="submit" className="primary-button">
-            ビンゴゲームに参加する！
+          <button type="submit" className="primary-button" disabled={isLoading}>
+            {isLoading ? '処理中...' : 'ビンゴゲームに参加する！'}
           </button>
         </form>
 
         <div className="divider"><span>または</span></div>
 
         <div className="new-issue-section">
-          <button type="button" onClick={handleGenerate} className="secondary-button font-bold">
-            合言葉を持っていませんか？<br/>新規でゲームに参加する
+          <button type="button" onClick={handleGenerate} className="secondary-button font-bold" disabled={isLoading}>
+            {isLoading ? '発行中...' : <>合言葉を持っていませんか？<br/>新規でゲームに参加する</>}
           </button>
 
           {generatedPass && (
