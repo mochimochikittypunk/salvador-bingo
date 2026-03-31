@@ -232,6 +232,8 @@ button {
   border-radius: 12px;
   width: 100%;
   max-width: 400px;
+  max-height: 85vh; /* 画面高さの85%を最大とする */
+  overflow-y: auto; /* はみ出たらスクロール可能に */
   box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
 
