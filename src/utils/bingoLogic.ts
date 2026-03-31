@@ -105,15 +105,20 @@ export const winningLines = [
 export function checkGameStatus(markedState: boolean[]) {
   let isReach = false;
   let isBingo = false;
+  let bingoCount = 0;
 
   for (const line of winningLines) {
     let markCount = 0;
     for (const index of line) {
       if (markedState[index]) markCount++;
     }
-    if (markCount === 3) isBingo = true;
-    else if (markCount === 2) isReach = true;
+    if (markCount === 3) {
+      isBingo = true;
+      bingoCount++;
+    } else if (markCount === 2) {
+      isReach = true;
+    }
   }
 
-  return { isReach, isBingo };
+  return { isReach, isBingo, bingoCount };
 }

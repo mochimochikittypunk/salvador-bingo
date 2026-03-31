@@ -18,7 +18,21 @@ export const BingoBoard: React.FC<Props> = ({
 }) => {
   // Seeded randomization based on the password
   const boardData = useMemo(() => getOptimizedBoard(password), [password]);
-  const { isReach, isBingo } = checkGameStatus(markedState);
+  const { isReach, isBingo, bingoCount } = checkGameStatus(markedState);
+
+  // 到達列に応じたボタン（最高到達のみ）を決定
+  const getRewardInfo = () => {
+    if (bingoCount >= 3) {
+      return { text: "🎉 超豪華キャッシュバックを受け取る！", level: 3, class: 'luxury-button' };
+    } else if (bingoCount >= 2) {
+      return { text: "3000円受け取る", level: 2, class: 'primary-button reward-button' };
+    } else if (bingoCount >= 1) {
+      return { text: "1000円キャッシュバックを受け取る！", level: 1, class: 'primary-button reward-button' };
+    }
+    return null;
+  };
+
+  const rewardInfo = getRewardInfo();
 
   return (
     <div className="bingo-page-container fade-in">
@@ -45,6 +59,14 @@ export const BingoBoard: React.FC<Props> = ({
           })}
         </div>
       </div>
+
+      {rewardInfo && (
+        <div className="reward-container fade-in">
+          <a href={`/?reward=${rewardInfo.level}`} target="_blank" rel="noopener noreferrer" className={rewardInfo.class}>
+            {rewardInfo.text}
+          </a>
+        </div>
+      )}
       
       <div className="actions-section">
         <button className="secondary-button" onClick={onGoToTop} style={{ marginBottom: '16px' }}>
