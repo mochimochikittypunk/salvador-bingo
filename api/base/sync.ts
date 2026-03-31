@@ -70,15 +70,26 @@ export default async function handler(req: any, res: any) {
     const orderItems = orderData.order.order_items || [];
     const itemNames = orderItems.map((item: any) => item.title);
 
-    // Filter which items bought match our bingo beans
-    // Because titles might be long e.g. "【深煎り】エチオピア...", we'll check if it includes bingo keywords.
-    const bingoCandidates = [
-      'エチオピア', 'ケニア', 'ルワンダ', 'ブレンド', 'ゲイシャ', 'ディカフェ', 'コロンビア', 'メキシコ', 'エルサルバドル'
-    ];
+    // Filter which items bought match our bingo beans using aliases
+    const bingoMap: Record<string, string[]> = {
+      'エチオピア': ['エチオピア', 'ETHIOPIA'],
+      'ケニア': ['ケニア', 'KENYA'],
+      'ルワンダ': ['ルワンダ', 'RWANDA'],
+      'ブレンド': ['ブレンド', 'BLEND', 'BASIC', 'DISCOVER', 'YAMAHANA', 'ヤマハナ'], // Yamahana Discover Basic等にも対応
+      'ゲイシャ': ['ゲイシャ', 'GEISHA'],
+      'ディカフェ': ['ディカフェ', 'デカフェ', 'DECAF'],
+      'コロンビア': ['コロンビア', 'COLOMBIA'],
+      'メキシコ': ['メキシコ', 'MEXICO'],
+      'エルサルバドル': ['エルサルバドル', 'SALVADOR', 'ELSALVADOR', 'EL SALVADOR']
+    };
 
-    const boughtKeywords = bingoCandidates.filter(keyword => 
-      itemNames.some((title: string) => title.includes(keyword))
-    );
+    const boughtKeywords = Object.keys(bingoMap).filter(bingoSquare => {
+      const aliases = bingoMap[bingoSquare];
+      return itemNames.some((title: string) => {
+        const upperTitle = title.toUpperCase();
+        return aliases.some(alias => upperTitle.includes(alias.toUpperCase()));
+      });
+    });
 
     await redis.quit();
 
