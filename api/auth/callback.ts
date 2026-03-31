@@ -3,7 +3,7 @@ import { Redis } from 'ioredis';
 export default async function handler(req: any, res: any) {
   const code = req.query.code;
   if (!code) {
-    return res.status(400).send('Authorization code is missing.');
+    return res.status(400).json({ error: 'Authorization code is missing.' });
   }
 
   const clientId = process.env.BASE_CLIENT_ID;
@@ -11,7 +11,7 @@ export default async function handler(req: any, res: any) {
   const redisUrl = process.env.REDIS_URL;
 
   if (!clientId || !clientSecret || !redisUrl) {
-    return res.status(500).send('Server configuration error (missing ENV variables).');
+    return res.status(500).json({ error: 'Server configuration error (missing ENV variables).' });
   }
 
   const redirectUri = 'https://bingo-neon-ten.vercel.app/api/auth/callback';
@@ -41,7 +41,8 @@ export default async function handler(req: any, res: any) {
     await redis.set('base_refresh_token', data.refresh_token);
     await redis.quit();
 
-    res.status(200).send(`
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.status(200).end(`
       <html>
         <head>
           <title>BASE連携完了</title>
@@ -60,6 +61,6 @@ export default async function handler(req: any, res: any) {
       </html>
     `);
   } catch (error: any) {
-    res.status(500).send(`エラーが発生しました: ${error.message}`);
+    res.status(500).json({ error: `エラーが発生しました: ${error.message}` });
   }
 }
