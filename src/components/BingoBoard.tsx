@@ -76,7 +76,16 @@ export const BingoBoard: React.FC<Props> = ({
   const rewardInfo = getRewardInfo();
 
   return (
-    <div className="bingo-page-container fade-in">
+    <div className="bingo-container fade-in">
+      <div className="bingo-header">
+        <h2 className="bingo-title theme-gradient-text" style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>
+          SALVADOR BINGO
+        </h2>
+        <p className="current-password-display">
+          あなたの合言葉: <strong>{password}</strong>
+        </p>
+      </div>
+
       <div className="status-board">
         <span id="reach-text" className={`status-text ${isReach ? 'active' : ''}`}>リーチ!</span>
         <span id="bingo-text" className={`status-text ${isBingo ? 'active' : ''}`}>BINGO!</span>

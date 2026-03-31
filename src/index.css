@@ -649,3 +649,23 @@ button {
   color: var(--bingo-color);
 }
 
+/* Password Display */
+.current-password-display {
+  display: inline-block;
+  background-color: var(--card-bg);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  color: var(--text-color);
+  margin-block-start: 0;
+  margin-block-end: 1.5rem;
+  border: 1px solid #d3c4bc;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.current-password-display strong {
+  color: var(--accent-color);
+  font-size: 1.05rem;
+  letter-spacing: 1px;
+}
+

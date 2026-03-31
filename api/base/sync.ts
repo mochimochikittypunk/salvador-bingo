@@ -66,9 +66,29 @@ export default async function handler(req: any, res: any) {
       throw new Error(orderData.error || orderData.error_description || '注文情報の取得に失敗しました。注文番号が正しいかご確認ください。');
     }
 
+    // 期間判定 (2026年4月1日 00:00:00 〜 2026年4月30日 23:59:59 JST)
+    const orderTimestamp = orderData.order.ordered; // Unix timestamp in seconds
+    const aprilStart = new Date('2026-04-01T00:00:00+09:00').getTime() / 1000;
+    const aprilEnd = new Date('2026-04-30T23:59:59+09:00').getTime() / 1000;
+
+    if (orderTimestamp < aprilStart || orderTimestamp > aprilEnd) {
+      return res.status(400).json({ error: 'ビンゴ対象外の注文です。（※2026年4月1日〜4月30日までの注文のみ対象）' });
+    }
+
+    if (orderData.order.subscription) {
+      return res.status(400).json({ error: '定期便（サブスク）はビンゴの対象外となります。' });
+    }
+
     // BASE Orders data extraction
     const orderItems = orderData.order.order_items || [];
-    const itemNames = orderItems.map((item: any) => item.title);
+    
+    // セット商品やまとめ買い商品を排除
+    const validItems = orderItems.filter((item: any) => {
+      const title = item.title || '';
+      return !title.includes('セット') && !title.includes('まとめ買い') && !title.includes('定期便');
+    });
+
+    const itemNames = validItems.map((item: any) => item.title);
 
     // Filter which items bought match our bingo beans using aliases
     const bingoMap: Record<string, string[]> = {
