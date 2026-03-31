@@ -1,5 +1,5 @@
 export default function handler(req: any, res: any) {
-  const clientId = process.env.BASE_CLIENT_ID;
+  const clientId = process.env.BASE_CLIENT_ID?.trim();
   if (!clientId) {
     return res.status(500).json({ error: 'BASE_CLIENT_ID is not configured in Vercel. Please add it to Environment Variables.' });
   }

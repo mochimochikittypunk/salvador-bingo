@@ -28,9 +28,9 @@ export default async function handler(req: any, res: any) {
   const { orderId } = req.body;
   if (!orderId) return res.status(400).json({ error: 'Order ID (注文番号) がありません。' });
 
-  const clientId = process.env.BASE_CLIENT_ID;
-  const clientSecret = process.env.BASE_CLIENT_SECRET;
-  const redisUrl = process.env.REDIS_URL;
+  const clientId = process.env.BASE_CLIENT_ID?.trim();
+  const clientSecret = process.env.BASE_CLIENT_SECRET?.trim();
+  const redisUrl = process.env.REDIS_URL?.trim();
 
   if (!clientId || !clientSecret || !redisUrl) {
     return res.status(500).json({ error: 'サーバー設定エラー: BASE APIキーが見つかりません。' });

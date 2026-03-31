@@ -6,9 +6,9 @@ export default async function handler(req: any, res: any) {
     return res.status(400).json({ error: 'Authorization code is missing.' });
   }
 
-  const clientId = process.env.BASE_CLIENT_ID;
-  const clientSecret = process.env.BASE_CLIENT_SECRET;
-  const redisUrl = process.env.REDIS_URL;
+  const clientId = process.env.BASE_CLIENT_ID?.trim();
+  const clientSecret = process.env.BASE_CLIENT_SECRET?.trim();
+  const redisUrl = process.env.REDIS_URL?.trim();
 
   if (!clientId || !clientSecret || !redisUrl) {
     return res.status(500).json({ error: 'Server configuration error (missing ENV variables).' });
