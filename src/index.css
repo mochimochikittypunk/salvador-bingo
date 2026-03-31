@@ -398,3 +398,30 @@ button {
 .bingo-cell:nth-child(n+7) { border-bottom: none; }
 .bingo-cell:nth-child(3n+1) { border-left: none; }
 .bingo-cell:nth-child(3n) { border-right: none; }
+
+/* error message */
+.error-message {
+  color: var(--bingo-color);
+  font-size: 0.85rem;
+  font-weight: bold;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  animation: fadeIn 0.2s;
+}
+
+/* Access Counter */
+.access-counter {
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: #8c7d7d;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
+}
+.counter-number {
+  font-weight: bold;
+  color: var(--accent-color);
+  font-size: 1.05rem;
+  margin: 0 4px;
+}
+
